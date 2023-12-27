@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather Report</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  </head>
+
+  <body>
+    <div class="temp-main">
+      <div class="location">
+          <h1 class="timezone">Loading...</h1>
+          <h3 class="offset"></h3>
+          <canvas class="icon" width="64" height="64"></canvas>
+      </div>
+
+      <div class="temp"> 
+          <div class="degree-sec" title="Click to alternate between F and C" onclick="changeDeg()">
+              <h2 class="temp-deg"></h2>
+              <h2 class="temp-deg-symb">°</h2>
+              <span class="temp-symb">F</span>
+          </div>
+          <div class="temp-desc"></div>
+      </div>
+    </div>
+
+    <div class="search-result"></div>
+
+    <button class="show-more" onclick="newImgs()">
+      <h2>Show more</h2>
+    </button>
+
+    <script src="zzz-keys.js"></script>
+    <script src="skycons.js"></script>
+    <script src="main.js"></script>
+
+  </body>
+</html>
