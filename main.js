@@ -3,7 +3,7 @@ let tempDesc = document.querySelector('.temp-desc');
 let tempDeg = document.querySelector('.temp-deg');
 let timezone = document.querySelector('.timezone');
 let tempSymb = document.querySelector('.temp-symb');
-
+let genderExpr = document.querySelector('.select');
 
 function getLoc() {
 
@@ -148,7 +148,9 @@ function getYear() {
 function searchImages(imgCount) {
     // searches google images for images
 
-    const api = keyFashion(getYear(), getSeason(), imgCount)
+    const api = keyFashion(getYear(), getSeason(), genderExpr.value, imgCount)
+
+    console.log(api)
 
     fetch(api)
         // data => json
@@ -202,6 +204,11 @@ function removeImg() {
     while(searchResult.firstElementChild) {
         searchResult.firstElementChild.remove();
     } 
+}
+
+function newSearch() {
+    removeImg();
+    searchImages(1);
 }
 
 function initialize() {

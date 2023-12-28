@@ -10,6 +10,8 @@
   </head>
 
   <body>
+    
+    <!--tempearture and weather-->
     <div class="temp-main">
       <div class="location">
           <h1 class="timezone">Loading...</h1>
@@ -25,6 +27,17 @@
           </div>
           <div class="temp-desc"></div>
       </div>
+    </div>
+
+    <!--dropdown gender select menu-->
+
+    <div class="dropdown">
+      <label for="expression" class="label">Gender expression: </label>
+      <select name="expression" class="select" onchange="newSearch()">
+          <option value="for women">Feminine</option>
+          <option value="gender neutral">Gender Neutral</option>
+          <option value="for men">Masculine</option>
+      </select>
     </div>
 
     <div class="search-result"></div>

@@ -9,6 +9,7 @@
 
 :root {
     --img-height: 1800px;
+    --site-blue: rgb(105, 204, 224);
 }
 
 /* WEATHER AND LOCATION */
@@ -40,6 +41,7 @@
 .degree-sec {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .degree-sec span {
@@ -57,29 +59,48 @@
     font-size: 40px;
 }
 
+/* DROPDOWN MENU GENDER SELECT */
 
+.dropdown {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    font-family: sans-serif;
+    color: aliceblue;
+    font-size: 25px;
+}
+
+select {
+    font-family: sans-serif;
+    background-color: aliceblue;
+    color: var(--site-blue);
+    font-size: 20px;
+    margin: 5px;
+}
 
 /* IMAGES */
 
 .search-result {
-    display: flex;
-    flex-flow: column wrap;
-    padding-top: 100px;
+    width: 1500px;
+    columns: 3;
+    column-gap: 1em;
+    align-items: top;
     padding-left: 100px;
     padding-right: 100px;
-    gap: 1em;
-    justify-content: flex-start;
-    align-content: space-between;
-    height: var(--img-height);
-    
+    margin-bottom: 50px;
+    margin-top: 42px;
 }
 
 .search-result img {
     display: block;
     height: auto;
     max-width: 420px;
+    min-width: 420px;
     object-fit: cover;
     border-radius: 10px;
+    margin-bottom: 1em;
+    cursor: pointer;
 }
 
 
@@ -96,6 +117,7 @@
     border-radius: 5px;
     padding: 10px 20px;
     margin: 0px auto 100px;
+    cursor: pointer;
 }
 
 .show-more h2 {
