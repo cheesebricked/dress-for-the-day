@@ -1,9 +1,10 @@
-let searchResult = document.querySelector('.search-result');
-let tempDesc = document.querySelector('.temp-desc');
-let tempDeg = document.querySelector('.temp-deg');
-let timezone = document.querySelector('.timezone');
-let tempSymb = document.querySelector('.temp-symb');
-let genderExpr = document.querySelector('.select');
+const searchResult = document.querySelector('.search-result');
+const tempDesc = document.querySelector('.temp-desc');
+const tempDeg = document.querySelector('.temp-deg');
+const timezone = document.querySelector('.timezone');
+const tempSymb = document.querySelector('.temp-symb');
+const genderExpr = document.querySelector('.select-gender');
+const seasonSelect = document.querySelector('.select-season');
 
 function getLoc() {
 
@@ -108,33 +109,30 @@ function getSeason() {
     const d = new Date();
     const month = d.getMonth();
 
-    if (month == 11 || month == 0 || month == 1) {
+    switch(month) {
         // dec - feb is winter
 
-        let ans = "winter"
-        return ans
+        case 11:
+        case 0:
+        case 1:
+            return "winter";
+        
+        case 2:
+        case 3:
+        case 4:
+            return "spring";
+
+        case 5:
+        case 6:
+        case 7:
+            return "summer";
+
+        case 8:
+        case 9:
+        case 10:
+            return "fall";
     }
 
-    else if (month == 2 || month == 3 || month == 4) {
-        // mar - may is spring
-
-        let ans = "spring"
-        return ans
-    }
-
-    else if (month == 5 || month == 6 || month == 7) {
-        // june - aug is summer
-
-        let ans = "summer"
-        return ans
-    }
-
-    else {
-        // sept - nov is fall
-
-        let ans = "fall"
-        return ans
-    }
 }
 
 function getYear() {
@@ -148,9 +146,7 @@ function getYear() {
 function searchImages(imgCount) {
     // searches google images for images
 
-    const api = keyFashion(getYear(), getSeason(), genderExpr.value, imgCount)
-
-    console.log(api)
+    const api = keyFashion(seasonSelect.value, getYear(), genderExpr.value, imgCount)
 
     fetch(api)
         // data => json
@@ -185,7 +181,6 @@ function getCSS(elem, var0) {
     var element = document.querySelector(elem),
     style = window.getComputedStyle(element),
     thing = style.getPropertyValue(var0);
-    console.log(thing);
 }
 
 function newImgs() {
@@ -214,8 +209,11 @@ function newSearch() {
 function initialize() {
     // functions to run on page load
 
+    seasonSelect.value = getSeason();
+
     getLoc();
     searchImages(1);
+
 }
 
 // run on page load

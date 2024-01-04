@@ -15,7 +15,7 @@
 /* WEATHER AND LOCATION */
 
 .temp-main {
-    height: 30vh;
+    height: 25vh;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -64,8 +64,6 @@
 .dropdown {
     display: flex;
     justify-content: center;
-    flex-direction: row;
-    align-items: center;
     font-family: sans-serif;
     color: aliceblue;
     font-size: 25px;
@@ -75,8 +73,13 @@ select {
     font-family: sans-serif;
     background-color: aliceblue;
     color: var(--site-blue);
-    font-size: 20px;
-    margin: 5px;
+    font-size: 25px;
+    text-align: center;
+    margin-left: 10px;
+    border: 0px;
+    border-radius: 5px;
+    padding: 3px;
+    padding-left: 0px;
 }
 
 /* IMAGES */
@@ -85,7 +88,7 @@ select {
     width: 1500px;
     columns: 3;
     column-gap: 1em;
-    align-items: top;
+    align-items: row;
     padding-left: 100px;
     padding-right: 100px;
     margin-bottom: 50px;
