@@ -24,13 +24,13 @@ function getLoc() {
 
             // api is link to request data
 
-            const api = keyWeather(lat, long)
+            //const api = keyWeather(lat, long)
 
             // arrow allows function to run with that variable (i think?)
 
 
             // fetch command fetches data
-            fetch(api)
+            fetch(`http://127.0.0.1:5000/weather?lat=${lat}&long=${long}`)
                 // data => json
                 .then(response => {
                     return response.json()
@@ -48,6 +48,8 @@ function getLoc() {
                    setIcon(icon, document.querySelector('.icon'));
 
                 })
+
+                .catch(console.error)
         });
 
 
@@ -149,9 +151,9 @@ function getYear() {
 function searchImages(imgCount) {
     // searches google images for images
 
-    const api = keyFashion(seasonSelect.value, getYear(), genderExpr.value, imgCount)
+    //const api = keyFashion(seasonSelect.value, getYear(), genderExpr.value, imgCount)
 
-    fetch(api)
+    fetch(`http://127.0.0.1:5000/fashion?season=${seasonSelect.value}&gender=${genderExpr.value}&img_count=${imgCount}`)
         // data => json
         .then(response => {
             return response.json()
