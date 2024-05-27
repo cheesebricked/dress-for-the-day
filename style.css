@@ -1,6 +1,4 @@
 *{
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
     background: rgb(105, 204, 224);
     font-family: sans-serif;
@@ -15,6 +13,7 @@
 /* WEATHER AND LOCATION */
 
 .temp-main {
+    margin: auto;
     height: 25vh;
     display: flex;
     justify-content: center;
@@ -27,7 +26,6 @@
 .location,
 .temp {
     height: 10vh;
-    width: 33%;
     display: flex;
     justify-content: space-around;
     align-items: center;   
@@ -42,6 +40,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    height: 1px;
 }
 
 .degree-sec span {
@@ -54,6 +53,16 @@
     font-size: 30px;
 }
 
+.timezone {
+    font-size: 40px;
+    margin: 10px;
+}
+
+@media only screen and (max-width: 450px) {
+    .timezone {
+        font-size: 30px;
+    }
+}
 
 .degree-sec h2 {
     font-size: 40px;
@@ -62,24 +71,29 @@
 /* DROPDOWN MENU GENDER SELECT */
 
 .dropdown {
-    display: flex;
-    justify-content: center;
+    margin: auto;
     font-family: sans-serif;
     color: aliceblue;
     font-size: 25px;
 }
 
+.dropdown-aligner {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
 select {
+    margin: auto;
     font-family: sans-serif;
     background-color: aliceblue;
     color: var(--site-blue);
     font-size: 25px;
     text-align: center;
-    margin-left: 10px;
     border: 0px;
     border-radius: 5px;
-    padding: 3px;
-    padding-left: 0px;
 }
 
 /* IMAGES */
@@ -118,9 +132,10 @@ select {
     background: aliceblue;
     border: 0;
     border-radius: 5px;
-    padding: 10px 20px;
-    margin: 0px auto 100px;
+    margin: auto;   
     cursor: pointer;
+    height: 50px;
+    width: 200px;
 }
 
 .show-more h2 {
