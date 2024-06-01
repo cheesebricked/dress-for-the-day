@@ -14,16 +14,22 @@ def main():
 
 @app.route('/weather')
 def weather_key():
-    lat = request.args.get('lat')
-    long = request.args.get('long')
-    return requests.get(key_weather(lat, long)).content
+    try:
+        lat = request.args.get('lat')
+        long = request.args.get('long')
+        return requests.get(key_weather(lat, long)).content, 200
+    except Exception as e:
+        return jsonify({"message" : str(e)}), 400       # catch any exceptions
 
 @app.route('/fashion')
 def fashion_key():
-    season = request.args.get('season')
-    gender = request.args.get('gender')
-    imgCount = request.args.get('img_count')
-    return requests.get(key_fashion(season, gender, imgCount)).content
+    try:
+        season = request.args.get('season')
+        gender = request.args.get('gender')
+        imgCount = request.args.get('img_count')
+        return requests.get(key_fashion(season, gender, imgCount)).content, 200
+    except Exception as e:
+        return jsonify({"message" : str(e)}), 400       # catch any exceptions
 
 
 
@@ -37,7 +43,7 @@ def login():
 def register():
     username = request.json.get("username")
     email = request.json.get("email")
-    password = request.json.get("password")     # maybe hashing can happend before password is sent so it cant be intercepted?
+    password = request.json.get("password")     # maybe hashing can happen before password is sent so it cant be intercepted?
 
     if not username or not email or not password:
         return jsonify({"message" : "You must include a username, password, and email."}), 400
@@ -52,3 +58,14 @@ def register():
     return jsonify({"message" : "User created!"}), 201
 
     
+
+
+def reset_db():
+    db.drop_all()
+    db.create_all()
+
+if __name__ == "__main__":      # only excecute main if we are running main directly
+    with app.app_context():
+        db.create_all()         # create all models in database
+    
+    app.run(debug = True)
