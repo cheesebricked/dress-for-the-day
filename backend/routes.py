@@ -1,7 +1,7 @@
 from flask import jsonify, request, Blueprint
 import requests
-from keys import key_weather, key_fashion
-from db.models import *
+from backend.keys import key_weather, key_fashion
+from backend.db.models import *
 
 app_bp = Blueprint('main', __name__)
 
@@ -41,9 +41,9 @@ def login():
 
 @app_bp.route('/register', methods=["POST"])
 def register():
-    username = request.json.get("username")
-    email = request.json.get("email")
-    password = request.json.get("password")     # maybe hashing can happen before password is sent so it cant be intercepted?
+    username = request.form.get("username")
+    email = request.form.get("email")
+    password = request.form.get("password")     # maybe hashing can happen before password is sent so it cant be intercepted?
 
     if not username or not email or not password:
         return jsonify({"message" : "You must include a username, password, and email."}), 400
@@ -55,6 +55,6 @@ def register():
     except Exception as e:
         return jsonify({"message" : str(e)}), 400       # catch any exceptions
     
-    return jsonify({"message" : "User created!"}), 201
+    return jsonify({"message" : f'New user {username} created!'}), 201
 
     
