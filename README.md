@@ -1,7 +1,8 @@
-# dress-for-the-day
+# Dress for the Day!
 A website that suggests outifts based on user gender and season! Also shows you the weather to aid your outfit creation.
+Projected features include user accounts to save liked outfits.
 
-Uses Pirate Weather API, Google Images API, and Flask
+Uses Pirate Weather API, Google Images API, Flask, and SQLAlchemy
 
 Deployment coming soon!
 
