@@ -7,6 +7,21 @@ export default function Weather() {
     const [tempDesc, setTempDesc] = useState("CLEAR_DAY")      // temp starts in F
     const [timezone, setTimezone] = useState(null)
     const [iconWeather, setIconWeather] = useState(null)
+    
+    let weather;
+
+    const skyconners =  new Map([
+        ["clear-day" , 'CLEAR_DAY'],
+        ["clear-night" , 'CLEAR_NIGHT'],
+        ["partly-cloudy-day" , 'PARTLY_CLOUDY_DAY'],
+        ["partly-cloudy-night" , 'PARTLY_CLOUDY_NIGHT'],
+        ["cloudy" , 'CLOUDY'],
+        ["rain" , 'RAIN'],
+        ["sleet" , 'SLEET'],
+        ["snow" , 'SNOW'],
+        ["wind" , 'WIND'],
+        ["fog" , 'FOG']
+    ])
 
     function getLoc() {
         let lat;
@@ -30,9 +45,10 @@ export default function Weather() {
     
                        setIconWeather(icon)
     
-                       setTempDeg(apparentTemperature)
+                       setTempDeg(apparentTemperature.toFixed(2))
                        setTempDesc(summary)
                        setTimezone(data.timezone)
+
     
                     })
                     .catch(console.error)
@@ -59,18 +75,6 @@ export default function Weather() {
         getLoc()
     }, [tempDesc, timezone])
 
-    const skyconners =  new Map([
-        ["clear-day" , 'CLEAR_DAY'],
-        ["clear-night" , 'CLEAR_NIGHT'],
-        ["parly-cloudy-day" , 'PARTLY_CLOUDY_DAY'],
-        ["partly-cloudy-night" , 'PARTLY_CLOUDY_NIGHT'],
-        ["cloudy" , 'CLOUDY'],
-        ["rain" , 'RAIN'],
-        ["sleet" , 'SLEET'],
-        ["snow" , 'SNOW'],
-        ["wind" , 'WIND'],
-        ["fog" , 'FOG']
-    ])
 
     return (
         <>
@@ -79,9 +83,10 @@ export default function Weather() {
                     <h1 class="timezone">{ timezone }</h1>
                     <h3 class="offset"></h3>
                     <Skycons
-                        type={skyconners.get(iconWeather)}
-                        animate={true}
-                        size={64}
+                        color = "white"
+                        type = {skyconners.get(iconWeather)}
+                        animate = {true}
+                        size = {64}
                     />
                 </div>
 

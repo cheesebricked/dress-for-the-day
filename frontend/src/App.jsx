@@ -1,10 +1,9 @@
-// @ts-ignore
-import Header from "./Header"
+import Weather from "./Weather"
 
 function App() {
   return (
     <>
-      <Header />
+      <Weather />
     </>
   )
 }
