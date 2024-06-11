@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import ImageDisplayer from "./ImageDisplayer"
+import { useAtom } from "jotai"
+import { seasonAtom, genderAtom } from "./Global"
 
 export default function SelectorMenu() {
-    const [genderExpr, setGenderExpr] = useState("for-women")
-    const [season, setSeason] = useState("fall")
+    const [genderExpr, setGenderExpr] = useAtom(genderAtom)
+    const [season, setSeason] = useAtom(seasonAtom)
 
     function getSeason() {
         // gets the season based on the current month as a string

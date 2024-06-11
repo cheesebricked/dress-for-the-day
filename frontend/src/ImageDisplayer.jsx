@@ -1,9 +1,13 @@
 import ImageF from "./ImageF";
 import { useState, useEffect } from "react";
+import { useAtom } from "jotai";
+import { seasonAtom, genderAtom } from "./Global"
 
 
-export default function ImageDisplayer({ season, genderExpr }) {
+export default function ImageDisplayer() {
     const [results, setResults] = useState([])
+    const [season] = useAtom(seasonAtom)
+    const [genderExpr] = useAtom(genderAtom)
 
     function getImages(pageNum) {
         // searches google images for images
@@ -15,7 +19,7 @@ export default function ImageDisplayer({ season, genderExpr }) {
             })
             // get parts of data
             .then(data => {
-                console.log(data.items)
+                console.log(data)
                 setResults(data.items);
             })
     }
