@@ -23,7 +23,7 @@ export default function Weather() {
         ["fog" , 'FOG']
     ])
 
-    async function getLoc() {
+    function getLoc() {
         let lat;
         let long;
 

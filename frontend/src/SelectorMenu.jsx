@@ -8,29 +8,23 @@ export default function SelectorMenu() {
     function getSeason() {
         // gets the season based on the current month as a string
     
-        const d = new Date();
-        const month = d.getMonth();
+        const d = new Date().getMonth();
     
-        switch(month) {
-            // dec - feb is winter
-    
+        switch(d) {
             case 11:
             case 0:
             case 1:
                 return "winter";
-                break;
-            
+
             case 2:
             case 3:
             case 4:
                 return "spring";
-                break;
     
             case 5:
             case 6:
             case 7:
                 return "summer";
-                break;
     
             case 8:
             case 9:
@@ -41,7 +35,7 @@ export default function SelectorMenu() {
 
     useEffect(() => {
         setSeason(getSeason)
-    }, [season])
+    }, [])
 
     return (
         <>
