@@ -1,4 +1,3 @@
-# ignore api keys
 backend/keys.py
 backend/__pycache__/*
 tests/__pycache__/*
