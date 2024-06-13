@@ -86,7 +86,7 @@
 }
 
 select {
-    margin: auto;
+    margin: 10px;
     font-family: sans-serif;
     background-color: aliceblue;
     color: var(--site-blue);
@@ -99,22 +99,19 @@ select {
 /* IMAGES */
 
 .search-result {
-    width: 1500px;
-    columns: 3;
-    column-gap: 1em;
-    align-items: row;
-    padding-left: 100px;
-    padding-right: 100px;
-    margin-bottom: 50px;
-    margin-top: 42px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px 30px;
+    margin: auto 0;
+    width: fit-content; 
+    justify-content: center;
+    margin-top: 50px;
 }
 
 .search-result img {
-    display: block;
-    height: auto;
-    max-width: 420px;
-    min-width: 420px;
-    object-fit: cover;
+    width: clamp(100px, 40vw, 420px);
     border-radius: 10px;
     margin-bottom: 1em;
     cursor: pointer;
