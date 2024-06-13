@@ -1,28 +1,27 @@
 import ImageF from "./ImageF";
 import { useState, useEffect, useRef } from "react";
 import { useAtom } from "jotai";
-import { seasonAtom, genderAtom, pageAtom } from "./Global"
+import { seasonAtom, genderAtom, imgNumberAtom } from "./Global"
 
 
 export default function ImageDisplayer() {
     const [season] = useAtom(seasonAtom)
     const [genderExpr] = useAtom(genderAtom)
-    const [pageNumber, setPageNumber] = useAtom(pageAtom)
+    const [imgNumber, setImgNumber] = useAtom(imgNumberAtom)
     const [results, setResults] = useState([])
     const prevSelector = useRef([season, genderExpr])
     const replacer = useRef(false)
 
-    function getImages(pageNum, replaceImages) {
+    function getImages(imgNum, replaceImages) {
         // searches google images for images
 
-        fetch(`http://127.0.0.1:5000/fashion?season=${season}&gender=${genderExpr}&img_count=${pageNum}`)
+        fetch(`http://127.0.0.1:5000/fashion?season=${season}&gender=${genderExpr}&img_count=${imgNum}`)
             // data => json
             .then(response => {
                 return response.json()
             })
             // get parts of data
             .then(data => {
-                console.log(data)
                 setResults(replaceImages ? data.items : [...results, data.items])
             })
     }
@@ -40,14 +39,14 @@ export default function ImageDisplayer() {
 
         if (szn !== season || genderExpr !== gndr) {
             replacer.current = true
-            setPageNumber(1)
+            setImgNumber(1)
         }
 
-        //getImages(pageNumber, replacer);  //UNCOMMENT WHEN WANT TO TEST GOOGLE IMAPGE API
+        getImages(imgNumber, replacer);  //UNCOMMENT WHEN WANT TO TEST GOOGLE IMAPGE API
         prevSelector.current = [season, genderExpr]
         replacer.current = false
         
-    }, [season, genderExpr, pageNumber])
+    }, [season, genderExpr, imgNumber])
 
     return (
         <>
