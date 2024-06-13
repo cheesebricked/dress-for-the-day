@@ -1,15 +1,18 @@
 import ImageF from "./ImageF";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAtom } from "jotai";
-import { seasonAtom, genderAtom } from "./Global"
+import { seasonAtom, genderAtom, pageAtom } from "./Global"
 
 
 export default function ImageDisplayer() {
-    const [results, setResults] = useState([])
     const [season] = useAtom(seasonAtom)
     const [genderExpr] = useAtom(genderAtom)
+    const [pageNumber, setPageNumber] = useAtom(pageAtom)
+    const [results, setResults] = useState([])
+    const prevSelector = useRef([season, genderExpr])
+    const replacer = useRef(false)
 
-    function getImages(pageNum) {
+    function getImages(pageNum, replaceImages) {
         // searches google images for images
 
         fetch(`http://127.0.0.1:5000/fashion?season=${season}&gender=${genderExpr}&img_count=${pageNum}`)
@@ -20,13 +23,31 @@ export default function ImageDisplayer() {
             // get parts of data
             .then(data => {
                 console.log(data)
-                setResults(data.items);
+                setResults(replaceImages ? data.items : [...results, data.items])
             })
     }
 
     useEffect(() => {
-        getImages(1);  //UNCOMMENT WHEN WANT TO TEST GOOGLE IMAPGE API
-    }, [])
+        /*
+        - first checks if season has been determined yet
+        - if it has, then checks if we are replacing or adding images by checking of the season or gender has changed
+        - finally, updates current prevSelector state, sets replace images to false
+
+         */
+        if (season === "default") { return }
+
+        const [szn, gndr] = prevSelector.current
+
+        if (szn !== season || genderExpr !== gndr) {
+            replacer.current = true
+            setPageNumber(1)
+        }
+
+        //getImages(pageNumber, replacer);  //UNCOMMENT WHEN WANT TO TEST GOOGLE IMAPGE API
+        prevSelector.current = [season, genderExpr]
+        replacer.current = false
+        
+    }, [season, genderExpr, pageNumber])
 
     return (
         <>
