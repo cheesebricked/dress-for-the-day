@@ -2,6 +2,9 @@
 
 from backend.db.models import User
 
+
+# TEST REGISTER
+
 def test_main(client):
     # check if '/' works
     response = client.get("/")
@@ -35,3 +38,4 @@ def test_register_empty(client):
     assert b"You must include a username, password, and email." in response.data
     response = client.post("/register", data={"username":"user", "email":"tester@test.com", "password":""})
     assert b"You must include a username, password, and email." in response.data
+
