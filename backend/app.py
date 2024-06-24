@@ -11,10 +11,10 @@ def create_app(database_uri="sqlite:///database.db"):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     with app.app_context():
-        from backend.routes import app_bp
+        from routes import app_bp
         app.register_blueprint(app_bp)
 
-    from backend.db.models import db
+    from db.models import db
     db.init_app(app)
 
     

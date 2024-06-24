@@ -4,3 +4,4 @@ tests/__pycache__/*
 tests/.pytest_cache/*
 backend/db/__pycache__/*
 IDEAS.txt
+backend/instance

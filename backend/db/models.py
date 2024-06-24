@@ -15,6 +15,15 @@ class User(db.Model):
     password = db.Column(db.String(80), unique = False, nullable = False)
     likes = db.relationship('Like', secondary = user_likes, backref='likers')
 
+    def to_json(self):
+        # returns a python dicitonary of the contact
+        return {
+            "id" : self.id,
+            "username" : self.username,
+            "email" : self.email,
+            "password" : self.password
+        }
+    
     def __repr__(self):
         return f'User(id = {self.id}, username = {self.username}, email = {self.email}, password = {self.password})'
 
