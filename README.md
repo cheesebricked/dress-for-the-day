@@ -2,7 +2,7 @@
 A website that suggests outifts based on user gender and season! Also shows you the weather to aid your outfit creation.
 Projected features include user accounts to save liked outfits.
 
-Uses Pirate Weather API, Google Images API, Flask, and SQLAlchemy
+Uses React, Flask, and SQLAlchemy
 
 Deployment coming soon!
 
