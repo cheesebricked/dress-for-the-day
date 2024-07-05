@@ -1,6 +1,6 @@
 from flask import jsonify, request, Blueprint
 import requests
-from keys import key_weather, key_fashion
+from call_apis import key_weather, key_fashion
 from db.models import *
 
 app_bp = Blueprint('main', __name__)
@@ -33,7 +33,7 @@ def fashion_key():
 
 
 
-# user handling
+# USER ACCESS HANDLING
 
 @app_bp.route('/login')
 def login():
@@ -57,11 +57,40 @@ def register():
     
     return jsonify({"message" : f'New user {username} created!'}), 201
 
+
+# GETTERS
+
 @app_bp.route('/get_users', methods=["GET"])
 def get_users():
     users = User.query.all()
-    json_users = list(map(lambda x: x.to_json(), users))
-    return jsonify({"contacts": json_users})
+    json_users = list(map(lambda user: user.to_json(), users))
+
+    return jsonify({"users": json_users}), 200
+
+
+@app_bp.route('/get_all_likes', methods=["GET"])     # TEST THIS
+def get_all_likes():
+    likes = Like.query.all()
+    json_likes = list(map(lambda like: like.to_json(), likes))
+
+    return jsonify({"likes": json_likes}), 200
+
+
+@app_bp.route('/get_user_likes/<int:user_id>', methods=["GET"])     # TEST THIS
+def get_user_likes(user_id):
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"message":"User not found"}), 404
+    
+    user_likes = list(map(lambda like: like.to_json(), user.likes))
+
+    return jsonify({f'user_likes_id:{user_id}' : user_likes}), 200
+
+
+
+
+# USER UPDATE/DELETE HANDLING
 
 @app_bp.route("/update_user/<int:user_id>", methods=["PATCH"])
 def update_user(user_id):
@@ -79,6 +108,7 @@ def update_user(user_id):
 
     return jsonify({"message":"User updated"}), 201
 
+
 @app_bp.route('/delete_user/<int:user_id>', methods=["DELETE"])
 def delete_user(user_id):
     user = User.query.get(user_id)
@@ -89,4 +119,28 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
 
-    return jsonify({"message":'User deleted'})
+    return jsonify({"message":'User deleted'}), 201
+
+
+# LIKES
+
+@app_bp.route('/add_like_to_user', methods=["POST"])     # TEST THIS
+def add_like_to_user():
+    user_id = request.args.get('user_id', None)
+    like_id = request.args.get('like_id', None)
+
+    if not user_id or not like_id:
+        return jsonify({"message":"Missing user_id or like_id"}), 400
+
+    user = User.query.get(user_id)
+    like = Like. query.get(like_id)
+    if not user:
+        return jsonify({"message":"User not found"}), 404
+    if not like:
+        return jsonify({"message":"Like not found"}), 404
+
+    user.likes.append(like)
+
+    db.session.commit()
+
+    return jsonify({"message":f'Added like_id {like_id} to user_id {user_id}'}), 201

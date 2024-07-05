@@ -130,6 +130,7 @@ select {
     border: 0;
     border-radius: 5px;
     margin: auto;   
+    margin-top: 5px;
     cursor: pointer;
     height: 50px;
     width: 200px;
@@ -139,4 +140,5 @@ select {
     background: aliceblue;
     color: rgb(105, 204, 224);
     font-size: 30px;
+    padding: 7.7px;
 }

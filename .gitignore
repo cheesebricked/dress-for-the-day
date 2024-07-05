@@ -1,7 +1,7 @@
-backend/keys.py
 backend/__pycache__/*
 tests/__pycache__/*
 tests/.pytest_cache/*
 backend/db/__pycache__/*
 IDEAS.txt
 backend/instance
+backend/*.env

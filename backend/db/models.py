@@ -31,5 +31,11 @@ class Like(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     image_link = db.Column(db.String(999), unique = False, nullable = False)
 
+    def to_json(self):
+        return {
+            "id" : self.id,
+            "image_link" : self.image_link
+        }
+
     def __repr__(self):
         return f'Like(id = {self.id}, image_link = {self.image_link})'
