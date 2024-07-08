@@ -16,6 +16,8 @@ def create_app(database_uri="sqlite:///database.db"):
 
     from db.models import db
     db.init_app(app)
+    with app.app_context():
+        db.create_all() 
 
     
     return app
