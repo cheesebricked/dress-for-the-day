@@ -1,5 +1,6 @@
 import Skycons, { SkyconsType } from 'react-skycons'
 import { useEffect, useState } from 'react';
+import { backendURL } from './Global';
 
 export default function Weather() {
     const [tempDeg, setTempDeg] = useState(0)
@@ -35,7 +36,7 @@ export default function Weather() {
                 lat = pos.coords.latitude;
     
                 // fetch command fetches data
-                fetch(`http://127.0.0.1:5000/weather?lat=${lat}&long=${long}`)
+                fetch(`${backendURL}/weather?lat=${lat}&long=${long}`)
                     // data => json
                     .then(response => {
                         return response.json()

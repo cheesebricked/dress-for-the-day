@@ -2,6 +2,7 @@ import ImageF from "./ImageF";
 import { useState, useEffect, useRef } from "react";
 import { useAtom } from "jotai";
 import { seasonAtom, genderAtom, imgNumberAtom } from "./Global"
+import { backendURL } from "./Global";
 
 
 export default function ImageDisplayer() {
@@ -15,7 +16,7 @@ export default function ImageDisplayer() {
     function getImages(imgNum, replaceImages) {
         // searches google images for images
 
-        fetch(`http://127.0.0.1:5000/fashion?season=${season}&gender=${genderExpr}&img_count=${imgNum}`)
+        fetch(`${backendURL}/fashion?season=${season}&gender=${genderExpr}&img_count=${imgNum}`)
             // data => json
             .then(response => {
                 return response.json()

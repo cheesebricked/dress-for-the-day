@@ -13,6 +13,7 @@
     "jotai": "^2.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dotenv": "^0.1.3",
     "react-skycons": "^0.8.8"
   },
   "devDependencies": {
