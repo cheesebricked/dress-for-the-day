@@ -5,6 +5,11 @@ from db.models import *
 
 app_bp = Blueprint('main', __name__)
 
+
+def item_exists(name, model):
+    return db.session.query(db.exists().where(model == name)).scalar()
+
+
 @app_bp.route('/')
 def main():
     return "lmao"
@@ -68,7 +73,7 @@ def get_users():
     return jsonify({"users": json_users}), 200
 
 
-@app_bp.route('/get_all_likes', methods=["GET"])     # TEST THIS
+@app_bp.route('/get_likes', methods=["GET"])
 def get_all_likes():
     likes = Like.query.all()
     json_likes = list(map(lambda like: like.to_json(), likes))
@@ -76,7 +81,7 @@ def get_all_likes():
     return jsonify({"likes": json_likes}), 200
 
 
-@app_bp.route('/get_user_likes/<int:user_id>', methods=["GET"])     # TEST THIS
+@app_bp.route('/get_user_likes/<int:user_id>', methods=["GET"])
 def get_user_likes(user_id):
     user = User.query.get(user_id)
 
@@ -124,6 +129,32 @@ def delete_user(user_id):
 
 # LIKES
 
+@app_bp.route('/add_like', methods=["POST"])
+def add_like():
+    like_url = request.args.get('like_url', None).strip()
+    like_exists = item_exists(like_url, Like.image_link)
+    if like_exists:
+        return jsonify({"message":f'like with url "{like_url}" already exists'}), 200
+
+    new_like = Like(image_link = like_url)
+    db.session.add(new_like)
+    db.session.commit()
+    return jsonify({"message":f'Like with url "{like_url}" successfully added'}), 201
+    
+
+@app_bp.route('/delete_like/<int:like_id>', methods=["DELETE"])
+def delete_like(like_id):
+    like = Like.query.get(like_id)
+
+    if not like:
+        return jsonify({"message":"User not found"}), 404
+    
+    db.session.delete(like)
+    db.session.commit()
+
+    return jsonify({"message":'Like deleted'}), 201
+
+
 @app_bp.route('/add_like_to_user', methods=["POST"])     # TEST THIS
 def add_like_to_user():
     user_id = request.args.get('user_id', None)
@@ -133,7 +164,7 @@ def add_like_to_user():
         return jsonify({"message":"Missing user_id or like_id"}), 400
 
     user = User.query.get(user_id)
-    like = Like. query.get(like_id)
+    like = Like.query.get(like_id)
     if not user:
         return jsonify({"message":"User not found"}), 404
     if not like:
@@ -144,3 +175,24 @@ def add_like_to_user():
     db.session.commit()
 
     return jsonify({"message":f'Added like_id {like_id} to user_id {user_id}'}), 201
+
+@app_bp.route('/remove_like_from_user', methods=["POST"])     # TEST THIS
+def remove_like_from_user():
+    user_id = request.args.get('user_id', None)
+    like_id = request.args.get('like_id', None)
+
+    if not user_id or not like_id:
+        return jsonify({"message":"Missing user_id or like_id"}), 400
+
+    user = User.query.get(user_id)
+    like = Like.query.get(like_id)
+    if not user:
+        return jsonify({"message":"User not found"}), 404
+    if not like:
+        return jsonify({"message":"Like not found"}), 404
+
+    user.likes.remove(like)     # add case for if like does not exist in user
+
+    db.session.commit()
+
+    return jsonify({"message":f'Removed Like from user_id {user_id}'}), 201
