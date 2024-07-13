@@ -40,9 +40,29 @@ def fashion_key():
 
 # USER ACCESS HANDLING
 
-@app_bp.route('/login')
+@app_bp.route('/login', methods=["POST"])       # TEST THIS
 def login():
-    pass
+    post_email = request.form.get("email")
+    post_password = request.form.get("password")
+
+    if not post_email or not post_password:
+        return jsonify({"message" : "You must include an email and password."}), 400
+
+    user_exists = item_exists(post_email, User.email)
+
+    if not user_exists:
+        return jsonify({"message" : f'User with email {post_email} does not exist.'}), 400
+    
+    user = User.query.filter_by(email=post_email).first()
+
+    if not (user.password == post_password):
+        return jsonify({"message" : "Incorrect password."}), 400
+    
+
+    # THEN HERE IS THE STUFF THAT HAPPENS ON A SUCESSFUL LOGIN
+    # HAVENT FIGURED THAT OUT YET BUT I WILL
+    
+
 
 @app_bp.route('/register', methods=["POST"])
 def register():
