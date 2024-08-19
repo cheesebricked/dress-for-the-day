@@ -1,7 +1,11 @@
 export default function Login() {
+    // logreg = login + register
+
     return (
         <>
-            <h1>Routing is working</h1>
+            <div className="logreg-box">
+                <h1>LOGIN PAGE</h1>
+            </div>
         </>
     )
 }
