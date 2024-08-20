@@ -44,9 +44,13 @@ def fashion_key():
 def login():
     post_email = request.form.get("email")
     post_password = request.form.get("password")
+    post_confirm_password = request.form.get("confirm-password")
 
     if not post_email or not post_password:
         return jsonify({"message" : "You must include an email and password."}), 400
+    
+    if not post_password == post_confirm_password:
+        return jsonify({"message" : "Passwords do not match."}), 400
 
     user_exists = item_exists(post_email, User.email)   # check if user with this email exists
 

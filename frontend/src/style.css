@@ -168,40 +168,112 @@ select {
     color: rgb(105, 204, 224);
     font-size: 30px;
     padding: 7.7px;
+    transition: font-size 0.2s;
 }
+
+.show-more h2:hover {
+    font-size: 32px;
+    padding: 6.7px;
+    transition: font-size 0.2s;
+}
+
 
 /* LOGIN / REGISTER PAGE */
 /* logreg = login + register */
 
 
 .logreg-box {
-    margin: 0px 500px;
-    border-radius: 10px;
+    margin: 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 50px;
 }
 
 .logreg-box > h1 {
     font-size: 50px;
-    margin-bottom: 10px;
 }
 
 .input-bar {
-    width: 600px;
+    width: 550px;
     background-color: aliceblue;
     padding: 10px;
     border: 2px solid aliceblue;
     border-radius: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     color: black;
 }
 
 .form-label {
     margin: 0px;
-    font-size: 19px;
+    font-size: 16px;
+}
+
+.home-button {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+    margin-top: 30px;
+    margin-left: 30px;
+    cursor: pointer;
+    transition-timing-function: ease-out;
+    transition: font-size 0.2s;
+}
+
+.home-button > a {
+    text-decoration: none;
+}
+
+.home-button:hover {
+    transition-timing-function: ease-out;
+    transition: font-size 0.2s;
+    font-size: 1.7em;
+}
+
+.submit-creds {
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: aliceblue;
+    border: 2px solid aliceblue;
+    border-radius: 5px;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+.submit-creds > h2 {
+    background-color: aliceblue;
+    color: var(--site-blue);
+    font-size: 23px;
+    margin: 10px;
+    transition: font-size 0.2s;
+}
+
+.submit-creds > h2:hover {
+    font-size: 25px;
+    transition: font-size 0.2s;
+}
+
+.register-link {
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-link > span {
+    transition: font-size 0.2s;
+}
+
+.register-link > span:hover {
+    font-size: 18px;
+    transition: font-size 0.2s;
 }
 
 
