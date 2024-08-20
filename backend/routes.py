@@ -48,7 +48,7 @@ def login():
     if not post_email or not post_password:
         return jsonify({"message" : "You must include an email and password."}), 400
 
-    user_exists = item_exists(post_email, User.email)
+    user_exists = item_exists(post_email, User.email)   # check if user with this email exists
 
     if not user_exists:
         return jsonify({"message" : f'User with email {post_email} does not exist.'}), 400
@@ -68,7 +68,7 @@ def login():
 def register():
     username = request.form.get("username")
     email = request.form.get("email")
-    password = request.form.get("password")     # maybe hashing can happen before password is sent so it cant be intercepted?
+    password = request.form.get("password")
 
     if not username or not email or not password:
         return jsonify({"message" : "You must include a username, password, and email."}), 400
