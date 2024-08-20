@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useAtom } from "jotai"
-import { loggedInAtom } from "./Global"
+import { loggedInAtom } from "../Global"
 
 export default function LoginOrUser() {
     const [loggedIn, setLoggedIn] = useAtom(loggedInAtom)

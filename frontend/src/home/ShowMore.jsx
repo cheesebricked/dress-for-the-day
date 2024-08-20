@@ -1,4 +1,4 @@
-import { imgNumberAtom } from "./Global"
+import { imgNumberAtom } from "../Global"
 import { useAtom } from "jotai"
 
 
@@ -8,7 +8,7 @@ export default function ShowMore() {
     return (
         <>
             <button class="show-more" onClick={() => setImgNum(imgNum + 10)}>
-                <a href="#top"><h2>Next page</h2></a>
+                <a href="#selector"><h2>Next page</h2></a>
             </button>
         </>
     )

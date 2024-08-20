@@ -1,6 +1,6 @@
 import Skycons, { SkyconsType } from 'react-skycons'
 import { useEffect, useState } from 'react';
-import { backendURL } from './Global';
+import { backendURL } from '../Global';
 
 export default function Weather() {
     const [tempDeg, setTempDeg] = useState(0)

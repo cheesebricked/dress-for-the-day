@@ -1,8 +1,8 @@
 import ImageF from "./ImageF";
 import { useState, useEffect, useRef } from "react";
 import { useAtom } from "jotai";
-import { seasonAtom, genderAtom, imgNumberAtom } from "./Global"
-import { backendURL } from "./Global";
+import { seasonAtom, genderAtom, imgNumberAtom } from "../Global"
+import { backendURL } from "../Global";
 
 
 export default function ImageDisplayer() {

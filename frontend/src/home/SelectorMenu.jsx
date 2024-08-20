@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import ImageDisplayer from "./ImageDisplayer"
 import { useAtom } from "jotai"
-import { seasonAtom, genderAtom } from "./Global"
+import { seasonAtom, genderAtom } from "../Global"
 
 export default function SelectorMenu() {
     const [genderExpr, setGenderExpr] = useAtom(genderAtom)
@@ -41,7 +41,7 @@ export default function SelectorMenu() {
 
     return (
         <>
-            <div class="dropdown">
+            <div class="dropdown" id="selector">
                 <h3 class="dropdown-aligner">
                     <span>
                         <select name="expression" 

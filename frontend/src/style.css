@@ -10,6 +10,8 @@
     --site-blue: rgb(105, 204, 224);
 }
 
+html { scroll-behavior: smooth; }
+
 /* USER PROFILE LABEL */
 
 .my-profile > h2 {
