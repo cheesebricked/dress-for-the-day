@@ -3,6 +3,7 @@
     background: rgb(105, 204, 224);
     font-family: sans-serif;
     color: aliceblue;
+    letter-spacing: 1px;
 }
 
 :root {
@@ -172,6 +173,36 @@ select {
 /* LOGIN / REGISTER PAGE */
 /* logreg = login + register */
 
+
+.logreg-box {
+    margin: 0px 500px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+}
+
+.logreg-box > h1 {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.input-bar {
+    width: 600px;
+    background-color: aliceblue;
+    padding: 10px;
+    border: 2px solid aliceblue;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.form-label {
+    margin: 0px;
+    font-size: 19px;
+}
 
 
  /* PAGE NOT FOUND */

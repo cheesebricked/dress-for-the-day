@@ -51,12 +51,12 @@ def login():
     user_exists = item_exists(post_email, User.email)   # check if user with this email exists
 
     if not user_exists:
-        return jsonify({"message" : f'User with email {post_email} does not exist.'}), 400
+        return jsonify({"message" : "Incorrect email or passord."}), 400
     
     user = User.query.filter_by(email=post_email).first()
 
     if not (user.password == post_password):
-        return jsonify({"message" : "Incorrect password."}), 400
+        return jsonify({"message" : "Incorrect email or passord."}), 400
     
 
     # THEN HERE IS THE STUFF THAT HAPPENS ON A SUCESSFUL LOGIN
@@ -175,7 +175,7 @@ def delete_like(like_id):
     return jsonify({"message":'Like deleted'}), 201
 
 
-@app_bp.route('/add_like_to_user', methods=["POST"])     # TEST THIS
+@app_bp.route('/add_like_to_user', methods=["POST"])
 def add_like_to_user():
     user_id = request.args.get('user_id', None)
     like_id = request.args.get('like_id', None)
@@ -195,6 +195,7 @@ def add_like_to_user():
     db.session.commit()
 
     return jsonify({"message":f'Added like_id {like_id} to user_id {user_id}'}), 201
+
 
 @app_bp.route('/remove_like_from_user', methods=["POST"])     # TEST THIS
 def remove_like_from_user():
