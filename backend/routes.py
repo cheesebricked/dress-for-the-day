@@ -40,17 +40,13 @@ def fashion_key():
 
 # USER ACCESS HANDLING
 
-@app_bp.route('/login', methods=["POST"])       # TEST THIS
+@app_bp.route('/login', methods=["POST"])
 def login():
     post_email = request.form.get("email")
     post_password = request.form.get("password")
-    post_confirm_password = request.form.get("confirmPass")
 
     if not post_email or not post_password:
         return jsonify({"message" : "You must include an email and password."}), 400
-    
-    if not post_password == post_confirm_password:
-        return jsonify({"message" : "Passwords do not match."}), 401
 
     user_exists = item_exists(post_email, User.email)   # check if user with this email exists
 
@@ -62,11 +58,12 @@ def login():
     if not (user.password == post_password):
         return jsonify({"message" : "Incorrect email or password."}), 401
     
-    return jsonify({"message" : "Shit woreked"}), 200
-    
 
     # THEN HERE IS THE STUFF THAT HAPPENS ON A SUCESSFUL LOGIN
     # HAVENT FIGURED THAT OUT YET BUT I WILL
+    # IM THINKING JWT TOKEN STUFF
+
+    return jsonify({"message" : "Shit woreked"}), 200
     
 
 
@@ -75,9 +72,18 @@ def register():
     username = request.form.get("username")
     email = request.form.get("email")
     password = request.form.get("password")
+    confirm_password = request.form.get("confirmPass")
 
     if not username or not email or not password:
         return jsonify({"message" : "You must include a username, password, and email."}), 400
+    
+    if not password == confirm_password:
+        return jsonify({"message" : "Passwords do not match."}), 401
+    
+    user_exists = item_exists(email, User.email)
+
+    if user_exists:
+        return jsonify({"message" : "User already exists."}), 401
 
     new_contact = User(username = username, email = email, password = password)
     try:

@@ -7,7 +7,6 @@ export default function Login() {
     // logreg = login + register
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [confirmPass, setConfirmPass] = useState('')
     const [message, setMessage] = useState('')
 
 
@@ -16,7 +15,6 @@ export default function Login() {
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
-        formData.append("confirmPass", confirmPass);
 
         fetch(`${backendURL}/login`, {
             method: "POST",
@@ -37,6 +35,8 @@ export default function Login() {
             setMessage("Error: " + error.message);
         });
     }
+
+
 
     return (
         <>
@@ -66,15 +66,6 @@ export default function Login() {
                         placeholder="Password"
                         id="password"
                         onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <label className="form-label" htmlFor="confirm-password"><h3>Confirm password:  </h3></label>
-                    <input className="input-bar" 
-                        type="password" 
-                        required 
-                        value={confirmPass}
-                        placeholder="Confirm password"
-                        id="confirm-password"
-                        onChange={(e) => setConfirmPass(e.target.value)}
                     />
                     <br />
                     <button className="submit-creds" type="submit"><h2>Submit</h2></button>
