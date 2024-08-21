@@ -44,23 +44,25 @@ def fashion_key():
 def login():
     post_email = request.form.get("email")
     post_password = request.form.get("password")
-    post_confirm_password = request.form.get("confirm-password")
+    post_confirm_password = request.form.get("confirmPass")
 
     if not post_email or not post_password:
         return jsonify({"message" : "You must include an email and password."}), 400
     
     if not post_password == post_confirm_password:
-        return jsonify({"message" : "Passwords do not match."}), 400
+        return jsonify({"message" : "Passwords do not match."}), 401
 
     user_exists = item_exists(post_email, User.email)   # check if user with this email exists
 
     if not user_exists:
-        return jsonify({"message" : "Incorrect email or passord."}), 400
+        return jsonify({"message" : "Incorrect email or password."}), 401
     
     user = User.query.filter_by(email=post_email).first()
 
     if not (user.password == post_password):
-        return jsonify({"message" : "Incorrect email or passord."}), 400
+        return jsonify({"message" : "Incorrect email or password."}), 401
+    
+    return jsonify({"message" : "Shit woreked"}), 200
     
 
     # THEN HERE IS THE STUFF THAT HAPPENS ON A SUCESSFUL LOGIN

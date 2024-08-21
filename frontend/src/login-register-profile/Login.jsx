@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom"
+import { backendURL } from "../Global";
 
 
 export default function Login() {
@@ -7,11 +8,34 @@ export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPass, setConfirmPass] = useState('')
+    const [message, setMessage] = useState('')
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log({email, password, confirmPass})
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("confirmPass", confirmPass);
+
+        fetch(`${backendURL}/login`, {
+            method: "POST",
+            body: formData
+        })
+        .then((res) => {
+            if (!res.ok) {
+                return res.json().then((data) => {
+                    throw new Error(data.message || "An error occurred.");
+                });
+            }
+            return res.json();
+        })
+        .then((data) => {
+            setMessage(data.message);
+        })
+        .catch((error) => {
+            setMessage("Error: " + error.message);
+        });
     }
 
     return (
@@ -23,6 +47,7 @@ export default function Login() {
             </h2>
             <div className="logreg-box">
                 <h1>Login</h1>
+                <h2 className="message">{message}</h2>
                 <form onSubmit={handleSubmit}>
                     <label className="form-label" htmlFor="email"><h3>Email: </h3></label>
                     <input className="input-bar" 

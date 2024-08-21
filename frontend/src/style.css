@@ -194,6 +194,11 @@ select {
     font-size: 50px;
 }
 
+.logreg-box > .message {
+    margin: 0px;
+    margin-bottom: 10px;
+}
+
 .input-bar {
     width: 550px;
     background-color: aliceblue;
