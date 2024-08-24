@@ -1,13 +1,34 @@
-from flask import jsonify, request, Blueprint
+from flask import jsonify, request, Blueprint, current_app
 import requests
 from call_apis import key_weather, key_fashion
 from db.models import *
+import jwt
+import datetime
+from functools import wraps
 
 app_bp = Blueprint('main', __name__)
 
 
 def item_exists(name, model):
     return db.session.query(db.exists().where(model == name)).scalar()
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get("token")
+
+        if not token:
+            return jsonify({"message" : "Token is missing!"}), 403
+
+        try:
+            data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            return jsonify({"message": "Token has expired!"}), 403
+        except jwt.InvalidTokenError:
+            return jsonify({"message": "Invalid token!"}), 403
+        
+        return f(*args, **kwargs)
+    return decorated
 
 
 @app_bp.route('/')
@@ -55,7 +76,7 @@ def login():
     
     user = User.query.filter_by(email=post_email).first()
 
-    if not (user.password == post_password):
+    if not (user.password == post_password):        # to add store passwords as hash, hash post password
         return jsonify({"message" : "Incorrect email or password."}), 401
     
 
@@ -63,7 +84,11 @@ def login():
     # HAVENT FIGURED THAT OUT YET BUT I WILL
     # IM THINKING JWT TOKEN STUFF
 
-    return jsonify({"message" : "Shit woreked"}), 200
+    token = jwt.encode({'user' : user.email,
+                        'exp' :  datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
+                        current_app.config['SECRET_KEY'])
+
+    return jsonify({"message" : token}), 200
     
 
 
