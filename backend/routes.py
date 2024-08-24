@@ -1,4 +1,4 @@
-from flask import jsonify, request, Blueprint, current_app
+from flask import jsonify, request, Blueprint, current_app, make_response
 import requests
 from call_apis import key_weather, key_fashion
 from db.models import *
@@ -8,14 +8,16 @@ from functools import wraps
 
 app_bp = Blueprint('main', __name__)
 
+token_lifetime = 30     # IN MINUTES
+
 
 def item_exists(name, model):
     return db.session.query(db.exists().where(model == name)).scalar()
 
-def token_required(f):
+def token_required(f):      # put @token_required under app_bp.route to make it a token reuqired route
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.args.get("token")
+        token = request.cookies.get('jwt_token')
 
         if not token:
             return jsonify({"message" : "Token is missing!"}), 403
@@ -38,7 +40,7 @@ def main():
 
 # API fetching
 
-@app_bp.route('/weather')
+@app_bp.route('/weather', methods=["GET"])
 def weather_key():
     try:
         lat = request.args.get('lat')
@@ -47,7 +49,7 @@ def weather_key():
     except Exception as e:
         return jsonify({"message" : str(e)}), 400       # catch any exceptions
 
-@app_bp.route('/fashion')
+@app_bp.route('/fashion', methods=["GET"])
 def fashion_key():
     try:
         season = request.args.get('season')
@@ -57,6 +59,13 @@ def fashion_key():
     except Exception as e:
         return jsonify({"message" : str(e)}), 400       # catch any exceptions
 
+
+
+# TOKEN STUFF
+@app_bp.route('/validate_token', methods=["POST"])
+@token_required
+def validate_token():
+    return jsonify({"message" : "Token valid"}), 200
 
 
 # USER ACCESS HANDLING
@@ -85,10 +94,20 @@ def login():
     # IM THINKING JWT TOKEN STUFF
 
     token = jwt.encode({'user' : user.email,
-                        'exp' :  datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
+                        'exp' :  datetime.datetime.utcnow() + datetime.timedelta(minutes=token_lifetime)},
                         current_app.config['SECRET_KEY'])
 
-    return jsonify({"message" : token}), 200
+    resp = make_response(jsonify({"message" : "Login success!"}))
+    resp.set_cookie(
+        'jwt_token',
+        token,
+        max_age = (token_lifetime * 60),
+        httponly = True,
+        secure = False,
+        samesite = 'None'
+    )
+
+    return resp, 200
     
 
 

@@ -18,6 +18,7 @@ export default function Login() {
 
         fetch(`${backendURL}/login`, {
             method: "POST",
+            credentials: 'include',
             body: formData
         })
         .then((res) => {

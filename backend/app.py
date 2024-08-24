@@ -5,7 +5,7 @@ import os
 
 def create_app(database_uri="sqlite:///database.db"):
     app = Flask(__name__)
-    CORS(app) 
+    CORS(app, supports_credentials=True) 
 
     #app.config.from_object("db.config")
     app.config["SQLALCHEMY_DATABASE_URI"] = database_uri
