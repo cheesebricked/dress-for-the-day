@@ -103,7 +103,7 @@ def login():
         token,
         max_age = (token_lifetime * 60),
         httponly = True,
-        secure = False,
+        secure = True,
         samesite = 'None'
     )
 
