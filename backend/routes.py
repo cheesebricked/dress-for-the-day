@@ -89,11 +89,10 @@ def login():
         return jsonify({"message" : "Incorrect email or password."}), 401
     
 
-    # THEN HERE IS THE STUFF THAT HAPPENS ON A SUCESSFUL LOGIN
-    # HAVENT FIGURED THAT OUT YET BUT I WILL
-    # IM THINKING JWT TOKEN STUFF
+    # on successful login:
 
-    token = jwt.encode({'user' : user.email,
+    token = jwt.encode({'id' : user.id,
+                        'user' : user.email,
                         'exp' :  datetime.datetime.utcnow() + datetime.timedelta(minutes=token_lifetime)},
                         current_app.config['SECRET_KEY'])
 
