@@ -1,4 +1,4 @@
-from flask import jsonify, request, Blueprint, current_app, make_response
+from flask import jsonify, request, Blueprint, current_app, make_response, url_for
 import requests
 from call_apis import key_weather, key_fashion
 from db.models import *
@@ -15,6 +15,11 @@ token_lifetime = 30     # IN MINUTES
 def item_exists(name, model):
     return db.session.query(db.exists().where(model == name)).scalar()
 
+def get_id_from_jwt(token):
+    jwt_token = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+    return jwt_token['id']
+
+
 def token_required(f):      # put @token_required under app_bp.route to make it a token reuqired route
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -24,7 +29,7 @@ def token_required(f):      # put @token_required under app_bp.route to make it 
             return jsonify({"message" : "Token is missing!"}), 403
 
         try:
-            data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+            jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             return jsonify({"message": "Token has expired!"}), 403
         except jwt.InvalidTokenError:
@@ -170,13 +175,25 @@ def get_user_likes(user_id):
 
     return jsonify({f'user_likes_id:{user_id}' : user_likes}), 200
 
+def check_user_like(user_id, like_id):
+    # check if a user likes an image
+    user = User.query.get(user_id)
 
+    if not user:
+        return jsonify({"message":"User not found"}), 404
+    
+    user_likes = list(map(lambda like: like.to_json(), user.likes))
+
+    return jsonify({f'user_likes_id:{user_id}' : user_likes}), 200
 
 
 # USER UPDATE/DELETE HANDLING
 
-@app_bp.route("/update_user/<int:user_id>", methods=["PATCH"])
-def update_user(user_id):
+@app_bp.route("/update_user", methods=["PATCH"])        # REWORK
+@token_required
+def update_user():
+    token = request.cookies.get('jwt_token')
+    user_id = get_id_from_jwt(token)
     user = User.query.get(user_id)
 
     if not user:
@@ -192,7 +209,7 @@ def update_user(user_id):
     return jsonify({"message":"User updated"}), 201
 
 
-@app_bp.route('/delete_user/<int:user_id>', methods=["DELETE"])
+@app_bp.route('/delete_user/<int:user_id>', methods=["DELETE"])     # REWORK
 def delete_user(user_id):
     user = User.query.get(user_id)
 
@@ -207,25 +224,13 @@ def delete_user(user_id):
 
 # LIKES
 
-@app_bp.route('/add_like', methods=["POST"])
-def add_like():
-    like_url = request.args.get('like_url', None).strip()
-    like_exists = item_exists(like_url, Like.image_link)
-    if like_exists:
-        return jsonify({"message":f'like with url "{like_url}" already exists'}), 200
-
-    new_like = Like(image_link = like_url)
-    db.session.add(new_like)
-    db.session.commit()
-    return jsonify({"message":f'Like with url "{like_url}" successfully added'}), 201
-    
-
 @app_bp.route('/delete_like/<int:like_id>', methods=["DELETE"])
+@token_required
 def delete_like(like_id):
     like = Like.query.get(like_id)
 
     if not like:
-        return jsonify({"message":"User not found"}), 404
+        return jsonify({"message":"Like not found"}), 404
     
     db.session.delete(like)
     db.session.commit()
@@ -234,17 +239,29 @@ def delete_like(like_id):
 
 
 @app_bp.route('/add_like_to_user', methods=["POST"])
+@token_required
 def add_like_to_user():
-    user_id = request.args.get('user_id', None)
-    like_id = request.args.get('like_id', None)
+    token = request.cookies.get('jwt_token')
+    post_user_id = get_id_from_jwt(token)
+    post_like_url = request.args.get('like_url', None)
 
-    if not user_id or not like_id:
-        return jsonify({"message":"Missing user_id or like_id"}), 400
-
-    user = User.query.get(user_id)
-    like = Like.query.get(like_id)
+    if not post_user_id or not post_like_url:
+        return jsonify({"message":"Missing user_id or like_url"}), 400
+    
+    user = User.query.get(post_user_id)
     if not user:
         return jsonify({"message":"User not found"}), 404
+    
+    like_exists = item_exists(post_like_url, Like.image_link)
+
+    if not like_exists:
+        new_like = Like(image_link = post_like_url)
+        db.session.add(new_like)
+        db.session.commit()
+
+    like_id = Like.query.filter_by(image_link = post_like_url).first().id
+
+    like = Like.query.get(like_id)
     if not like:
         return jsonify({"message":"Like not found"}), 404
 
@@ -252,21 +269,26 @@ def add_like_to_user():
 
     db.session.commit()
 
-    return jsonify({"message":f'Added like_id {like_id} to user_id {user_id}'}), 201
+    return jsonify({"message":f'Added like_id {like_id} to user_id {post_user_id}'}), 201
+    
 
 
 @app_bp.route('/remove_like_from_user', methods=["POST"])     # TEST THIS
+@token_required
 def remove_like_from_user():
-    user_id = request.args.get('user_id', None)
-    like_id = request.args.get('like_id', None)
+    token = request.cookies.get('jwt_token')
+    user_id = get_id_from_jwt(token)
+    like_url = request.args.get('like_url', None)
 
-    if not user_id or not like_id:
+    if not user_id or not like_url:
         return jsonify({"message":"Missing user_id or like_id"}), 400
-
+    
     user = User.query.get(user_id)
-    like = Like.query.get(like_id)
     if not user:
         return jsonify({"message":"User not found"}), 404
+    
+    like_id = Like.query.filter_by(image_link = like_url).first().id
+    like = Like.query.get(like_id)
     if not like:
         return jsonify({"message":"Like not found"}), 404
 
