@@ -5,6 +5,7 @@ from db.models import *
 import jwt
 import datetime
 from functools import wraps
+from passlib.hash import pbkdf2_sha256
 
 app_bp = Blueprint('main', __name__)
 
@@ -85,7 +86,7 @@ def login():
     
     user = User.query.filter_by(email=post_email).first()
 
-    if not (user.password == post_password):        # to add store passwords as hash, hash post password
+    if not (pbkdf2_sha256.verify(post_password, user.password)):        # to add store passwords as hash, hash post password
         return jsonify({"message" : "Incorrect email or password."}), 401
     
 
@@ -127,8 +128,10 @@ def register():
 
     if user_exists:
         return jsonify({"message" : "User already exists."}), 401
+    
+    hashed_password = pbkdf2_sha256.hash(password)
 
-    new_contact = User(username = username, email = email, password = password)
+    new_contact = User(username = username, email = email, password = hashed_password)
     try:
         db.session.add(new_contact)         # prepare to write to database
         db.session.commit()                 # write to database
