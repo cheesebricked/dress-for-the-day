@@ -29,11 +29,13 @@ class User(db.Model):
 
 class Like(db.Model):
     id = db.Column(db.Integer, primary_key = True)
+    image = db.Column(db.String(999), unique = False, nullable = False) 
     image_link = db.Column(db.String(999), unique = False, nullable = False)
 
     def to_json(self):
         return {
             "id" : self.id,
+            "image" : self.image,
             "image_link" : self.image_link
         }
 

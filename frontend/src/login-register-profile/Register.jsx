@@ -33,7 +33,7 @@ export default function Register() {
             return res.json();
         })
         .then((data) => {
-            setMessage(data.message);
+            navigate("/profile")
         })
         .catch((error) => {
             setMessage("Error: " + error.message);

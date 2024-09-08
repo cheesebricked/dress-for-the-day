@@ -164,19 +164,12 @@ def get_all_likes():
     return jsonify({"likes": json_likes}), 200
 
 
-@app_bp.route('/get_user_likes/<int:user_id>', methods=["GET"])
-def get_user_likes(user_id):
-    user = User.query.get(user_id)
-
-    if not user:
-        return jsonify({"message":"User not found"}), 404
-    
-    user_likes = list(map(lambda like: like.to_json(), user.likes))
-
-    return jsonify({f'user_likes_id:{user_id}' : user_likes}), 200
-
-def check_user_like(user_id, like_id):
-    # check if a user likes an image
+@app_bp.route('/get_user_likes', methods=["GET"])
+#@token_required
+def get_user_likes():
+    token = request.cookies.get('jwt_token')
+    #user_id = get_id_from_jwt(token)
+    user_id = request.args.get('id')
     user = User.query.get(user_id)
 
     if not user:
@@ -241,8 +234,11 @@ def delete_like(like_id):
 @app_bp.route('/add_like_to_user', methods=["POST"])
 @token_required
 def add_like_to_user():
+    #takes image and image url arg of image
+
     token = request.cookies.get('jwt_token')
     post_user_id = get_id_from_jwt(token)
+    post_like_image = request.args.get('img_url', None)
     post_like_url = request.args.get('like_url', None)
 
     if not post_user_id or not post_like_url:
@@ -255,7 +251,7 @@ def add_like_to_user():
     like_exists = item_exists(post_like_url, Like.image_link)
 
     if not like_exists:
-        new_like = Like(image_link = post_like_url)
+        new_like = Like(image = post_like_image, image_link = post_like_url)
         db.session.add(new_like)
         db.session.commit()
 
@@ -274,10 +270,11 @@ def add_like_to_user():
 
 
 @app_bp.route('/remove_like_from_user', methods=["POST"])     # TEST THIS
-@token_required
+#@token_required
 def remove_like_from_user():
     token = request.cookies.get('jwt_token')
-    user_id = get_id_from_jwt(token)
+    #user_id = get_id_from_jwt(token)
+    user_id = request.args.get('id')
     like_url = request.args.get('like_url', None)
 
     if not user_id or not like_url:
@@ -291,6 +288,9 @@ def remove_like_from_user():
     like = Like.query.get(like_id)
     if not like:
         return jsonify({"message":"Like not found"}), 404
+    
+    user_likes = list(map(lambda like: like.to_json(), user.likes))
+
 
     user.likes.remove(like)     # add case for if like does not exist in user
 
