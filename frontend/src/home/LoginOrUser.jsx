@@ -27,7 +27,7 @@ export default function LoginOrUser() {
         })
         .catch((error) => {
             setLoggedIn(false)
-            console.log("Error: " + error.message);
+            //console.log("Error: " + error.message);
         });
     }, [])
 

@@ -165,11 +165,10 @@ def get_all_likes():
 
 
 @app_bp.route('/get_user_likes', methods=["GET"])
-#@token_required
+@token_required
 def get_user_likes():
     token = request.cookies.get('jwt_token')
-    #user_id = get_id_from_jwt(token)
-    user_id = request.args.get('id')
+    user_id = get_id_from_jwt(token)
     user = User.query.get(user_id)
 
     if not user:
@@ -177,7 +176,7 @@ def get_user_likes():
     
     user_likes = list(map(lambda like: like.to_json(), user.likes))
 
-    return jsonify({f'user_likes_id:{user_id}' : user_likes}), 200
+    return jsonify({f'user_likes' : user_likes}), 200
 
 
 # USER UPDATE/DELETE HANDLING
@@ -260,6 +259,9 @@ def add_like_to_user():
     like = Like.query.get(like_id)
     if not like:
         return jsonify({"message":"Like not found"}), 404
+    
+    if like in user.likes:
+        return jsonify({"message" : "Like already added"}), 200
 
     user.likes.append(like)
 
@@ -270,11 +272,11 @@ def add_like_to_user():
 
 
 @app_bp.route('/remove_like_from_user', methods=["POST"])     # TEST THIS
-#@token_required
+@token_required
 def remove_like_from_user():
     token = request.cookies.get('jwt_token')
-    #user_id = get_id_from_jwt(token)
-    user_id = request.args.get('id')
+    user_id = get_id_from_jwt(token)
+    img_url = request.args.get('img_url', None)
     like_url = request.args.get('like_url', None)
 
     if not user_id or not like_url:
@@ -289,11 +291,16 @@ def remove_like_from_user():
     if not like:
         return jsonify({"message":"Like not found"}), 404
     
-    user_likes = list(map(lambda like: like.to_json(), user.likes))
-
+    if like not in user.likes:
+        return jsonify({"message": "Like not found in user's likes"}), 400
 
     user.likes.remove(like)     # add case for if like does not exist in user
 
-    db.session.commit()
+    try:
+        user.likes.remove(like)  # Remove the like from the user's likes
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()  # Rollback in case of error
+        return jsonify({"message": f"{str(e)}"}), 500
 
     return jsonify({"message":f'Removed Like from user_id {user_id}'}), 201
