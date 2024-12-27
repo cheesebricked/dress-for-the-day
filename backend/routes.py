@@ -113,8 +113,6 @@ def login():
     )
 
     return resp, 200
-    
-
 
 @app_bp.route('/register', methods=["POST"])
 def register():
@@ -294,13 +292,11 @@ def remove_like_from_user():
     if like not in user.likes:
         return jsonify({"message": "Like not found in user's likes"}), 400
 
-    user.likes.remove(like)     # add case for if like does not exist in user
-
     try:
         user.likes.remove(like)  # Remove the like from the user's likes
         db.session.commit()
     except Exception as e:
         db.session.rollback()  # Rollback in case of error
-        return jsonify({"message": f"{str(e)}"}), 500
+        return jsonify({"message": f"{str(e)}, like id: {like} like url:{like_url} like list: {user.likes}"}), 500
 
     return jsonify({"message":f'Removed Like from user_id {user_id}'}), 201

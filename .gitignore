@@ -2,6 +2,6 @@ backend/__pycache__/*
 tests/__pycache__/*
 tests/.pytest_cache/*
 backend/db/__pycache__/*
-IDEAS.txt
+TODO.txt
 backend/instance
 backend/*.env

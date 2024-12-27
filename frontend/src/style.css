@@ -290,3 +290,7 @@ select {
     justify-content: center;
     font-size: 90px;
 }
+
+.like {
+    cursor: pointer;
+}

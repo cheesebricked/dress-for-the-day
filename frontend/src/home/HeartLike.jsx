@@ -24,7 +24,7 @@ export default function HeartLike({ img, imgUrl }) {
             setLiked(true)
             let existsInDict = false;
             userLikes.forEach((like) => {
-                if (like.image === img) {
+                if (like.image == img) {
                     existsInDict = true
                 }
             });
@@ -59,7 +59,7 @@ export default function HeartLike({ img, imgUrl }) {
             setLiked(false)
             let existsInDict = false;
             userLikes.forEach((like) => {
-                if (like.image === img) {
+                if (like.image == img) {
                     existsInDict = true
                 }
             });
