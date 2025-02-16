@@ -2,6 +2,8 @@ backend/__pycache__/*
 tests/__pycache__/*
 tests/.pytest_cache/*
 backend/db/__pycache__/*
+backend/venv/*
+backend/venv
 TODO.txt
 backend/instance
 backend/*.env

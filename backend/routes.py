@@ -39,6 +39,24 @@ def token_required(f):      # put @token_required under app_bp.route to make it 
     return decorated
 
 
+@app_bp.route('/get_username', methods=['GET'])
+@token_required
+def get_username():
+    token = request.cookies.get('jwt_token')
+    try:
+        decoded_token = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+        username = decoded_token.get('username')
+
+        if username:
+            return jsonify({'username': username})
+        else:
+            return jsonify({'error': 'Username not found in the token'}), 400
+        
+    except jwt.ExpiredSignatureError:
+        return jsonify({'error': 'Token has expired'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'error': 'Invalid token'}), 401
+
 @app_bp.route('/')
 def main():
     return "lmao"
@@ -99,6 +117,7 @@ def login():
 
     token = jwt.encode({'id' : user.id,
                         'user' : user.email,
+                        'username': user.username,
                         'exp' :  datetime.datetime.utcnow() + datetime.timedelta(minutes=token_lifetime)},
                         current_app.config['SECRET_KEY'])
 
@@ -107,7 +126,7 @@ def login():
         'jwt_token',
         token,
         max_age = (token_lifetime * 60),
-        httponly = True,
+        #httponly = True,
         secure = True,
         samesite = 'None'
     )

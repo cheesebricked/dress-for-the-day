@@ -6,7 +6,7 @@ import Login from "./login-register-profile/Login"
 import Register from "./login-register-profile/Register"
 import Profile from "./login-register-profile/Profile"
 import PageNotFound from "./PageNotFound"
-import GetUserLikes from "./GetUserLikes"
+import GetUserLikes from "./getUserLikes"
 import { Route, Routes } from "react-router-dom"
 
 function App() {

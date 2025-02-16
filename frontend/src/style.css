@@ -131,7 +131,7 @@ select {
     flex-wrap: wrap;
     align-items: center;
     gap: 5px 30px;
-    margin: auto 0;
+    margin: auto 25px;
     width: fit-content; 
     justify-content: center;
     margin-top: 50px;
@@ -230,11 +230,24 @@ select {
     text-decoration: none;
 }
 
+.home-button-text {
+    transition-timing-function: ease-out;
+    transition: font-size 0.2s;
+}
+
+.home-button-text:hover {
+    transition-timing-function: ease-out;
+    transition: font-size 0.2s;
+    font-size: 1.3em;
+}
+
+/*
 .home-button:hover {
     transition-timing-function: ease-out;
     transition: font-size 0.2s;
     font-size: 1.7em;
 }
+*/
 
 .submit-creds {
     margin-left: auto;
@@ -293,4 +306,34 @@ select {
 
 .like {
     cursor: pointer;
+}
+
+.logout {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: 30px;
+    cursor: pointer;
+    transition-timing-function: ease-out;
+    transition: font-size 0.2s;
+}
+
+.logout:hover {
+    transition-timing-function: ease-out;
+    transition: font-size 0.2s;
+    font-size: 1.8em;
+}
+
+.profile-menu {
+    margin: auto 15px;  
+    display: flex;
+    align-items: center;
+}
+
+.username {
+    margin: 30px 44px;
+    font-size: 50px;
 }
