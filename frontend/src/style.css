@@ -138,7 +138,7 @@ select {
 }
 
 .search-result img {
-    width: clamp(100px, 40vw, 420px);
+    width: clamp(100px, 40vw, 400px);
     border-radius: 10px;
     margin-bottom: 1em;
     cursor: pointer;

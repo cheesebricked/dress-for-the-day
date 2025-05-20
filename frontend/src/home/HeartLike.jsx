@@ -1,4 +1,5 @@
 import { CgHeart } from "react-icons/cg";
+import { FaHeart } from "react-icons/fa";
 import { useAtom } from "jotai";
 import { backendURL, userLikesAtom } from "../Global";
 import { useEffect, useState } from "react";
@@ -82,11 +83,24 @@ export default function HeartLike({ img, imgUrl }) {
         });
     }, [])
 
-    return (
-        <>
-            <div className="like">
-                <CgHeart onClick={ liked ? handleUnlike : handleLike }/>
-            </div>
-        </>
-    )
+    if (liked) {
+        return (
+            <>
+                <div className="like">
+                    
+                    <FaHeart onClick={ liked ? handleUnlike : handleLike }
+                    fill="red"/>
+                </div>
+            </>
+        )
+    } else {
+        return (
+            <>
+                <div className="like">
+                    
+                    <CgHeart onClick={ liked ? handleUnlike : handleLike }/>
+                </div>
+            </>
+        )
+    }
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { backendURL } from "../Global";
 
 
@@ -10,6 +10,7 @@ export default function Register() {
     const [confirmPass, setConfirmPass] = useState('')
     const [username, setUsername] = useState('')
     const [message, setMessage] = useState('')
+    const navigate = useNavigate()
 
 
     const handleSubmit = (e) => {
