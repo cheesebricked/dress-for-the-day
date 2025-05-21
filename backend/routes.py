@@ -126,9 +126,22 @@ def login():
         'jwt_token',
         token,
         max_age = (token_lifetime * 60),
-        #httponly = True,
+        httponly = True,
         secure = True,
         samesite = 'None'
+    )
+
+    return resp, 200
+
+@app_bp.route('/logout', methods=["POST"])
+def logout():
+    resp = make_response(jsonify({"message": "Logged out successfully"}))
+    resp.set_cookie(
+        'jwt_token', '', 
+        expires=0,
+        path='/',
+        secure=True,
+        samesite='None'
     )
 
     return resp, 200
