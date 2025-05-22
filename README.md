@@ -5,6 +5,6 @@ Log in and save your liked outfits
 
 https://dress-for-the-day.netlify.app/
 
-![image](https://github.com/user-attachments/assets/f9a36cfd-0de9-4bcb-87db-343d3dbd2da0)
+![image](https://github.com/user-attachments/assets/3b5b2968-8276-404c-9146-d4299746a811)
 
 Latest deployment: Ver 1.0.0, May 21, 2025
