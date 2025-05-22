@@ -179,6 +179,7 @@ def register():
 # GETTERS
 
 @app_bp.route('/get_users', methods=["GET"])
+@token_required
 def get_users():
     users = User.query.all()
     json_users = list(map(lambda user: user.to_json(), users))
@@ -187,6 +188,7 @@ def get_users():
 
 
 @app_bp.route('/get_likes', methods=["GET"])
+@token_required
 def get_all_likes():
     likes = Like.query.all()
     json_likes = list(map(lambda like: like.to_json(), likes))
@@ -232,6 +234,7 @@ def update_user():
 
 
 @app_bp.route('/delete_user/<int:user_id>', methods=["DELETE"])     # REWORK
+@token_required
 def delete_user(user_id):
     user = User.query.get(user_id)
 
