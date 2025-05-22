@@ -178,6 +178,7 @@ def register():
 
 # GETTERS
 
+"""
 @app_bp.route('/get_users', methods=["GET"])
 @token_required
 def get_users():
@@ -194,6 +195,7 @@ def get_all_likes():
     json_likes = list(map(lambda like: like.to_json(), likes))
 
     return jsonify({"likes": json_likes}), 200
+"""
 
 
 @app_bp.route('/get_user_likes', methods=["GET"])
